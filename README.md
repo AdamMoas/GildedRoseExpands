@@ -109,10 +109,16 @@ This should present you with the below response:
 
 #### Surge Pricing
 
-A requirement for the application was to provide an Uber-like surge pricing feature that would increase all item prices by 10% if the items had been viewed more than 10 times within a window of 60 minutes.
-A record of each item view request had to be recorded, along with its current window within the time period. If the number of calls exceeded 10 calls and was within the 60 minute window from the initial call, then the prices of each item would be incremented by 10%.
-The challenge to consider is that a counter for each view must be maintained from the first call of a new 60 minute window, assuming no calls have been made at least in the last 60 minutes. This alone would not be satisfactory, as a situation where 1 call could be made in the first minute, and 9 calls are then made at the 59th minute. Once the 60 minutes expire, the window would reset, however, this is incorrect, as if 2 calls were made minutes later, the surge price should be applied, as the first call in the 59th minute would not be at the new window's start.
-To solve this problem, a reference to the last call must be kept up-to-date, allowing for the latest 60 minute window to be in sync with 11th call that would apply the surge price.
+A requirement for the application was to provide an Uber-like surge pricing feature that would increase all item prices by 10% if the items had been viewed more than 10 times within a 60 minute window.
+
+To achieve this, a record of each item view’s GET request had to be recorded, along with its current window within the time period. If the number of calls exceeded 10 calls and was within the 60 minute window from the initial call, then the prices of each item would be incremented by 10%.
+
+First consideration is that a counter for each view must be maintained from the first call of a new 60 minute window. This is assuming no calls have been made in the past 60 minutes. The next consideration is what to do if the call requirements are not met within the window. 
+
+One such example situation is, given 1 call could be made in the first minute of a new window, and 9 calls are then made on the 59th minute, once the 60 minutes expire, the window would reset, however, this would fall short on the requirement, as if 2 calls were made minutes later, the surge price should be applied, as the first call in the 59th minute should now be considered a new window starting point.
+
+To solve this problem, a reference to the last call must be kept up-to-date, allowing for the latest 60 minute window to be in sync with the surge price triggering call, in this case from the 11th GET request.
+
 
 #### Buying an item
 
